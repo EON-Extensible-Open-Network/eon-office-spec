@@ -277,6 +277,20 @@ colours (madde 35).
 | `audit.verify` | owner | → `ok`, `entries`, `head` or `broken_at` |
 | `backup.create` | owner | `path` (absolute, must not exist) → a checked copy of the database |
 
+### Well-known methods
+
+Names an application may put in `provides` so that a shell (EON Launcher) or another
+application can rely on them without knowing the application. They are conventions on top
+of `apps.call`, not core features; the core treats them like any other provided method.
+
+| Method | Params → result | Meaning |
+|---|---|---|
+| `open` | `id` (an id the application put in the search index, or a document id) → anything | Bring the item to the person: show the application's window on it. Called when a person picks a search result. |
+| `focus` | → anything | Bring the application's window to the front. |
+
+An application that does not provide them is still a complete application; a shell then
+shows the item without opening it.
+
 ### Messages the core sends to applications
 
 | Message | Kind | Application should |

@@ -5,6 +5,11 @@ SPDX-FileCopyrightText: 2026 EON contributors
 
 # Changelog
 
+## Unreleased
+
+- Protocol: well-known methods `open` and `focus`, so a shell can open a search result
+  or bring an application forward without knowing it.
+
 ## 0.1.0 — contracts v0
 
 - Protocol `v0`: loopback TCP, JSON-RPC 2.0 one object per line, sessions for the owner
