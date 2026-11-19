@@ -64,7 +64,9 @@ set is empty and the honest state of every release is *unsigned*.
 
 **Install.** A single-file artifact is saved in the client's folder for the application
 as the manifest's `entry.command` plus the platform's executable suffix (`hello` →
-`hello.exe` on Windows), which is where the core looks for it. Then
+`hello.exe` on Windows), which is where the core looks for it. An application with no
+`entry` starts on its own; its file is named after the last label of its id
+(`org.eon.office.caller` → `caller`). Then
 `apps.install` with the release's manifest and that folder as `path`. Nothing is granted.
 
 **Update.** A newer compatible release on the same channel is offered; installing it is
