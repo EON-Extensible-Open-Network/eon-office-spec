@@ -5,8 +5,9 @@ SPDX-FileCopyrightText: 2026 EON contributors
 
 # eon-office-spec
 
-**The contracts of EON Office.** How an application talks to the core, what its manifest
-says, what a capability means, how devices sync, how versions relate. Everything other
+**The contracts of EON Office.** What independently installed applications share on disk,
+what a manifest says, what a capability means, how links and sync work, how versions
+relate. Everything other
 people's work depends on lives here, and is licensed permissively so that anyone — including
 clients and applications this project will never control — can implement it.
 
@@ -17,19 +18,20 @@ clients and applications this project will never control — can implement it.
 | Document | What it fixes |
 |---|---|
 | [docs/architecture.md](docs/architecture.md) | The repositories, the layers, the rules that keep applications independent, deployment modes |
-| [docs/protocol.md](docs/protocol.md) | Transport, sessions, every method, every error, every event |
+| [docs/shared-store.md](docs/shared-store.md) | The home folder, `shared.sqlite`, each application's `data.sqlite`, links, text folding |
+| [docs/protocol.md](docs/protocol.md) | *Superseded:* the `0.1` core service protocol, kept for history |
 | [docs/capabilities.md](docs/capabilities.md) | What each permission allows and how to explain it to a person |
 | [docs/sync.md](docs/sync.md) | Clock stamps, change format, merge rules, conflicts |
 | [docs/versioning.md](docs/versioning.md) | Which numbers decide compatibility |
 | [docs/marketplace.md](docs/marketplace.md) | The marketplace index, the checks it makes, and what a client does to install and update |
 | [schemas/app-manifest.v0.schema.json](schemas/app-manifest.v0.schema.json) | The application manifest |
-| [schemas/message.v0.schema.json](schemas/message.v0.schema.json) | The message envelope on the wire |
+| [schemas/message.v0.schema.json](schemas/message.v0.schema.json) | *Superseded with protocol.md:* the message envelope |
 | [schemas/theme.v0.schema.json](schemas/theme.v0.schema.json) | Declarative themes |
 | [schemas/marketplace-entry.v0.schema.json](schemas/marketplace-entry.v0.schema.json) | One application in the marketplace index |
 
-The reference implementation is
-[`eon-office-core`](https://github.com/EON-Extensible-Open-Network/eon-office-core); the
-client library is [`eon-office-sdk`](https://github.com/EON-Extensible-Open-Network/eon-office-sdk).
+The reference implementation is the library
+[`eon-office-core`](https://github.com/EON-Extensible-Open-Network/eon-office-core); author
+tooling is [`eon-office-sdk`](https://github.com/EON-Extensible-Open-Network/eon-office-sdk).
 
 ## Validate
 

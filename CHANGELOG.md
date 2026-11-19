@@ -7,6 +7,16 @@ SPDX-FileCopyrightText: 2026 EON contributors
 
 ## Unreleased
 
+- **The shared folder replaces the core service** ([shared-store.md](docs/shared-store.md)):
+  `shared.sqlite` (registry, preferences, themes, search, activity, published summaries,
+  audit) and `apps/<id>/data.sqlite`, opened by every application through the
+  `eon-office-core` library. `protocol.md` and the message schema are kept, marked
+  superseded. `architecture.md` and `capabilities.md` rewritten: capabilities are declared,
+  shown at install, revocable, and described as transparency rather than a sandbox;
+  `events.publish` covers the recent list and published summaries, `call:<id>` covers
+  links and reading `<id>`'s summaries. Links are delivered by starting the registered
+  program with the link as its only argument.
+
 - Protocol: the well-known `activity` event (recent items and the activity feed, titles
   never contents) and the `eon-office://` deep-link format.
 - Marketplace: entry schema v0 and `docs/marketplace.md` (index checks, client install,

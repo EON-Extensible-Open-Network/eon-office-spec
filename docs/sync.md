@@ -33,7 +33,7 @@ Every write carries a hybrid logical clock stamp (Kulkarni et al., 2014):
   "doc": { "title": "Shopping" }, "deleted": false, "hlc": "0001763539200000-0000-3f2a9c41d07e88b1" }
 ```
 
-A deletion is `"deleted": true, "doc": null`. `sync.export` returns changes after `since`,
+A deletion is `"deleted": true, "doc": null`. An export returns changes after `since`,
 oldest first, and `until` — the stamp to pass as `since` next time. `complete: false` means
 there are more.
 

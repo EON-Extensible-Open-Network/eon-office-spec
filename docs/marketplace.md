@@ -5,7 +5,7 @@ SPDX-FileCopyrightText: 2026 EON contributors
 
 # The EON Office marketplace — v0 (UNSTABLE)
 
-How applications are listed, found, installed and updated, independently of the core and
+How applications are listed, found, installed and updated, independently of the library and
 of every application. The index is data in a Git repository
 ([`eon-office-marketplace`](https://github.com/EON-Extensible-Open-Network/eon-office-marketplace));
 nothing about it is hard-coded in a client, and an application never needs it: anything
@@ -41,8 +41,8 @@ source, and — before anything else — the capabilities the release's manifest
 the words of [capabilities.md](capabilities.md).
 
 **Choose a release.** The newest release on the person's channel (`stable` unless they chose
-`preview`) whose manifest `api` range contains the core's `api`, with an artifact for this
-platform. None: say why (no build for this platform, needs a newer core).
+`preview`) whose manifest `api` range contains the client's shared-store version, with an artifact
+for this platform. None: say why (no build for this platform, needs a newer EON Office).
 
 **Resolve requirements.** Each `requires` entry must be installed at `min` or newer, or be
 installable from the index; install those first. `recommends` are offered, never installed
@@ -64,16 +64,19 @@ set is empty and the honest state of every release is *unsigned*.
 
 **Install.** A single-file artifact is saved in the client's folder for the application
 as the manifest's `entry.command` plus the platform's executable suffix (`hello` →
-`hello.exe` on Windows), which is where the core looks for it. An application with no
-`entry` starts on its own; its file is named after the last label of its id
-(`org.eon.office.caller` → `caller`). Then
-`apps.install` with the release's manifest and that folder as `path`. Nothing is granted.
+`hello.exe` on Windows), which is where [links](shared-store.md#5-links) look for it. An
+application with no `entry` is named after the last label of its id
+(`org.eon.office.caller` → `caller`). Then the client starts the application once so it
+registers itself with that folder as `path`. Nothing is revoked or granted beyond what the
+manifest declares, and the person saw that list before downloading.
 
-**Update.** A newer compatible release on the same channel is offered; installing it is
-`apps.install` again, which keeps data and grants still requested and refuses a downgrade.
+**Update.** A newer compatible release on the same channel is offered; installing it
+replaces the file and starts it once; its data stays, and registration never downgrades.
 Revocation lists (madde 34) apply per version once they exist.
 
-**Remove.** `apps.uninstall`. The marketplace is not involved.
+**Remove.** The client unregisters the application (`Shared::unregister`) and removes its
+program folder; the person chooses whether `apps/<id>/` — their data — goes too. The
+marketplace is not involved.
 
 ## Not in v0, and why
 

@@ -5,6 +5,12 @@ SPDX-FileCopyrightText: 2026 EON contributors
 
 # EON Office application protocol — v0 (UNSTABLE)
 
+> **Superseded (19 November 2026).** EON Office no longer has a core service: the core is a
+> library and every application stands alone. What applications share is specified in
+> [shared-store.md](shared-store.md). This page is kept because `eon-office-core 0.1.0`,
+> `eon-office-sdk 0.1.0` and the first application releases implement it; nothing new
+> should.
+
 How an application talks to the EON Office core. Everything an application can do with the
 core is on this page; there is no other interface. `v0` may change without a migration
 path until `v1` (see [versioning.md](versioning.md)).
