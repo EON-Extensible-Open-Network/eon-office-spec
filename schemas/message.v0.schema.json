@@ -1,0 +1,98 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://spec.eonstream.org/office/schemas/message.v0.schema.json",
+  "title": "EON Office protocol message (v0 — UNSTABLE)",
+  "description": "One line on the wire: a JSON-RPC 2.0 request, notification or response. Batches (arrays) are not part of v0. The method catalogue, parameters and error codes are in docs/protocol.md; this schema fixes the envelope both sides can rely on.",
+  "oneOf": [
+    { "$ref": "#/$defs/request" },
+    { "$ref": "#/$defs/notification" },
+    { "$ref": "#/$defs/result" },
+    { "$ref": "#/$defs/error" }
+  ],
+  "$defs": {
+    "id": {
+      "description": "Chosen by the sender. The core's own requests to applications (invoke) use strings beginning with i.",
+      "type": ["string", "integer"]
+    },
+    "method": {
+      "type": "string",
+      "pattern": "^[a-z][a-z_]*(\\.[a-z][a-z_]*)*$"
+    },
+    "request": {
+      "type": "object",
+      "required": ["jsonrpc", "id", "method"],
+      "additionalProperties": false,
+      "properties": {
+        "jsonrpc": { "const": "2.0" },
+        "id": { "$ref": "#/$defs/id" },
+        "method": { "$ref": "#/$defs/method" },
+        "params": { "type": "object" }
+      }
+    },
+    "notification": {
+      "description": "No id, no answer. The core sends event, job.due and shutdown this way.",
+      "type": "object",
+      "required": ["jsonrpc", "method"],
+      "not": { "required": ["id"] },
+      "additionalProperties": false,
+      "properties": {
+        "jsonrpc": { "const": "2.0" },
+        "method": { "$ref": "#/$defs/method" },
+        "params": { "type": "object" }
+      }
+    },
+    "result": {
+      "type": "object",
+      "required": ["jsonrpc", "id", "result"],
+      "additionalProperties": false,
+      "properties": {
+        "jsonrpc": { "const": "2.0" },
+        "id": { "$ref": "#/$defs/id" },
+        "result": {}
+      }
+    },
+    "error": {
+      "type": "object",
+      "required": ["jsonrpc", "id", "error"],
+      "additionalProperties": false,
+      "properties": {
+        "jsonrpc": { "const": "2.0" },
+        "id": { "oneOf": [{ "$ref": "#/$defs/id" }, { "type": "null" }] },
+        "error": {
+          "type": "object",
+          "required": ["code", "message", "data"],
+          "properties": {
+            "code": { "type": "integer" },
+            "message": { "type": "string" },
+            "data": {
+              "type": "object",
+              "required": ["code"],
+              "properties": {
+                "code": {
+                  "description": "The stable machine code. Applications choose their own words, in their own language, from this — never from message.",
+                  "enum": [
+                    "parse_error",
+                    "invalid_request",
+                    "method_not_found",
+                    "invalid_params",
+                    "internal",
+                    "unauthenticated",
+                    "forbidden",
+                    "not_found",
+                    "conflict",
+                    "app_unavailable",
+                    "timeout",
+                    "rate_limited",
+                    "incompatible",
+                    "limit",
+                    "remote_error"
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

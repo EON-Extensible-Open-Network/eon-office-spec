@@ -1,0 +1,19 @@
+<!--
+SPDX-License-Identifier: Apache-2.0
+SPDX-FileCopyrightText: 2026 EON contributors
+-->
+
+# Changelog
+
+## 0.1.0 — contracts v0
+
+- Protocol `v0`: loopback TCP, JSON-RPC 2.0 one object per line, sessions for the owner
+  and for applications, authority checked per call, fifteen stable error codes, the method
+  catalogue for applications, directory, storage, sync, events, calls, notifications,
+  search, jobs, settings, preferences, themes, audit and backup.
+- Application manifest format `0`, with capabilities, `provides`, `publishes`, `entry`,
+  `restart`.
+- Message envelope and theme schemas.
+- Sync: hybrid logical clock stamps, change format, last-writer-wins with losers kept.
+- Architecture, capabilities and versioning documents.
+- 8 valid and 17 invalid examples; `npm run validate`.

@@ -1,0 +1,11 @@
+version = 1
+SPDX-PackageName = "eon-office-spec"
+SPDX-PackageSupplier = "EON contributors <hello@eonstream.org>"
+SPDX-PackageDownloadLocation = "https://github.com/EON-Extensible-Open-Network/eon-office-spec"
+
+# Catch-all. Markdown files also carry their own SPDX headers; this covers the
+# rest -- schemas, examples, dotfiles, workflows -- so `reuse lint` passes.
+[[annotations]]
+path = ["**"]
+SPDX-FileCopyrightText = "2026 EON contributors"
+SPDX-License-Identifier = "Apache-2.0"

@@ -1,0 +1,12 @@
+{
+  "id": "evil",
+  "colors": {
+    "background": "#ffffff",
+    "surface": "#f4f4f4",
+    "text": "#1a1a1a",
+    "muted": "#595959",
+    "accent": "#0b57d0",
+    "accent_text": "#ffffff"
+  },
+  "script": "alert(1)"
+}

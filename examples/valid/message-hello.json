@@ -1,0 +1,10 @@
+{
+  "jsonrpc": "2.0",
+  "id": 1,
+  "method": "session.hello",
+  "params": {
+    "app": "org.example.hello",
+    "token": "0f3c…(64 hex)",
+    "api": 0
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "id": "dark",
+  "colors": {
+    "background": "#000000",
+    "surface": "#111111",
+    "text": "#ffffff",
+    "muted": "#bbbbbb",
+    "accent": "#8ab4f8",
+    "accent_text": "#000000"
+  }
+}

@@ -1,0 +1,42 @@
+{
+  "manifest": 0,
+  "id": "org.eon.office.notes",
+  "name": "EON Notes",
+  "version": "0.1.0-alpha.1",
+  "api": {
+    "min": 0,
+    "max": 0
+  },
+  "description": "Notes, notebooks and daily pages. Offers other applications a way to open or create a note.",
+  "entry": {
+    "command": "eon-notes",
+    "args": [
+      "--from-core"
+    ]
+  },
+  "capabilities": [
+    "storage",
+    "notifications",
+    "search.index",
+    "search.query",
+    "events.publish",
+    "events.subscribe",
+    "schedule",
+    "call:org.eon.office.tasks"
+  ],
+  "provides": [
+    {
+      "method": "note.open",
+      "description": "Open a note by id in the Notes window."
+    },
+    {
+      "method": "note.create",
+      "description": "Create a note from a title and Markdown text; returns its id."
+    }
+  ],
+  "publishes": [
+    "note.created",
+    "note.deleted"
+  ],
+  "restart": "on-failure"
+}

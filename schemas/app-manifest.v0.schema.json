@@ -1,0 +1,120 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://spec.eonstream.org/office/schemas/app-manifest.v0.schema.json",
+  "title": "EON Office application manifest (v0 — UNSTABLE)",
+  "description": "What an EON Office application tells the core, and the person installing it: who it is, which protocol versions it speaks, what it needs (capabilities), what it offers other applications (provides) and which events it emits (publishes). Installing grants nothing: every capability starts pending until the owner grants it, and a grant can only cover something listed here. Unknown fields are refused, so a typo is an error rather than a silently ignored line. eon-office-core's manifest reader enforces the same rules; the examples in this repository are run against both.",
+  "type": "object",
+  "required": ["manifest", "id", "name", "version", "api"],
+  "additionalProperties": false,
+  "$defs": {
+    "appId": {
+      "description": "Reverse-DNS, lowercase: at least two labels of a-z 0-9 and inner hyphens. Example: org.eon.office.notes.",
+      "type": "string",
+      "maxLength": 100,
+      "pattern": "^[a-z0-9]([a-z0-9-]*[a-z0-9])?(\\.[a-z0-9]([a-z0-9-]*[a-z0-9])?)+$"
+    },
+    "name": {
+      "description": "Method and event names, collection names, ids, keys: 1-128 characters of A-Z a-z 0-9 . _ : -. Narrow on purpose: these end up in logs and audit entries, and none of them is prose.",
+      "type": "string",
+      "pattern": "^[A-Za-z0-9._:-]{1,128}$"
+    },
+    "capability": {
+      "description": "See docs/capabilities.md. call:<app-id> allows calling the methods that application provides.",
+      "anyOf": [
+        {
+          "enum": [
+            "storage",
+            "notifications",
+            "search.index",
+            "search.query",
+            "events.publish",
+            "events.subscribe",
+            "schedule",
+            "directory.read"
+          ]
+        },
+        {
+          "type": "string",
+          "pattern": "^call:[a-z0-9]([a-z0-9-]*[a-z0-9])?(\\.[a-z0-9]([a-z0-9-]*[a-z0-9])?)+$"
+        }
+      ]
+    }
+  },
+  "properties": {
+    "manifest": {
+      "description": "The manifest format version.",
+      "const": 0
+    },
+    "id": { "$ref": "#/$defs/appId" },
+    "name": {
+      "description": "What the person sees, e.g. \"EON Notes\".",
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 80,
+      "pattern": "\\S"
+    },
+    "version": {
+      "description": "Semantic version (semver.org 2.0.0). Upgrades never go backwards (madde 39).",
+      "type": "string",
+      "pattern": "^(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)(-[0-9A-Za-z-]+(\\.[0-9A-Za-z-]+)*)?(\\+[0-9A-Za-z-]+(\\.[0-9A-Za-z-]+)*)?$"
+    },
+    "api": {
+      "description": "The protocol versions this application speaks, inclusive. The core refuses an application whose range does not contain its own version.",
+      "type": "object",
+      "required": ["min", "max"],
+      "additionalProperties": false,
+      "properties": {
+        "min": { "type": "integer", "minimum": 0 },
+        "max": { "type": "integer", "minimum": 0 }
+      }
+    },
+    "description": {
+      "type": "string",
+      "maxLength": 500
+    },
+    "entry": {
+      "description": "How the core starts the application. A relative command is resolved against the application's install path. Absent: the application starts on its own and connects; the core cannot launch it.",
+      "type": "object",
+      "required": ["command"],
+      "additionalProperties": false,
+      "properties": {
+        "command": { "type": "string", "minLength": 1, "pattern": "\\S" },
+        "args": {
+          "type": "array",
+          "maxItems": 64,
+          "items": { "type": "string" }
+        }
+      }
+    },
+    "capabilities": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": { "$ref": "#/$defs/capability" }
+    },
+    "provides": {
+      "description": "Methods other applications may call through the core with call:<this id>. Calling anything not listed is refused by the core before it reaches the application.",
+      "type": "array",
+      "maxItems": 64,
+      "items": {
+        "type": "object",
+        "required": ["method"],
+        "additionalProperties": false,
+        "properties": {
+          "method": { "$ref": "#/$defs/name" },
+          "description": { "type": "string", "maxLength": 500 }
+        }
+      }
+    },
+    "publishes": {
+      "description": "Event names this application emits, under <id>/. Publishing anything else is refused, so every event is documented here.",
+      "type": "array",
+      "maxItems": 64,
+      "uniqueItems": true,
+      "items": { "$ref": "#/$defs/name" }
+    },
+    "restart": {
+      "description": "What the core's supervisor does when the application exits with a failure. on-failure: restart, at most three times a minute, with 1 s, 2 s, 4 s back-off.",
+      "enum": ["never", "on-failure"]
+    }
+  }
+}

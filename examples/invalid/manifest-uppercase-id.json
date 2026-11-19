@@ -1,0 +1,10 @@
+{
+  "manifest": 0,
+  "id": "Org.Example.Hello",
+  "name": "Hello",
+  "version": "0.1.0",
+  "api": {
+    "min": 0,
+    "max": 0
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "jsonrpc": "2.0",
+  "method": "event",
+  "params": {
+    "topic": "org.eon.office.notes/note.created",
+    "from": "org.eon.office.notes",
+    "payload": {
+      "id": "n-2026-11-19"
+    },
+    "at": 1763539200000
+  }
+}

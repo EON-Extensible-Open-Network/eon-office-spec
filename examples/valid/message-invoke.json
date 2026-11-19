@@ -1,0 +1,12 @@
+{
+  "jsonrpc": "2.0",
+  "id": "i42",
+  "method": "invoke",
+  "params": {
+    "from": "org.eon.office.notes",
+    "method": "task.create",
+    "params": {
+      "title": "Buy milk"
+    }
+  }
+}

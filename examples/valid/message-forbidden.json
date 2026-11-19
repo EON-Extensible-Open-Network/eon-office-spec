@@ -1,0 +1,12 @@
+{
+  "jsonrpc": "2.0",
+  "id": 2,
+  "error": {
+    "code": -32002,
+    "message": "this needs the `storage` capability, which is not granted",
+    "data": {
+      "code": "forbidden",
+      "capability": "storage"
+    }
+  }
+}

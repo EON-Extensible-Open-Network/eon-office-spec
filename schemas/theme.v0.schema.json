@@ -1,0 +1,37 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://spec.eonstream.org/office/schemas/theme.v0.schema.json",
+  "title": "EON Office theme (v0 — UNSTABLE)",
+  "description": "A declarative theme every EON Office application can render: six colours, nothing else. No code, no stylesheet, no URLs — madde 4's rule carried over. The schema checks shape; contrast cannot be expressed in JSON Schema, so the core additionally measures four text pairs (text/background, text/surface, muted/background, accent_text/accent) and refuses any below WCAG 2.1 AA, 4.5:1 (madde 35).",
+  "type": "object",
+  "required": ["id", "colors"],
+  "additionalProperties": false,
+  "$defs": {
+    "color": {
+      "description": "#rrggbb. One spelling per colour, so themes stay comparable.",
+      "type": "string",
+      "pattern": "^#[0-9a-fA-F]{6}$"
+    }
+  },
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9._:-]{1,128}$",
+      "not": { "enum": ["system", "light", "dark"] }
+    },
+    "name": { "type": "string", "maxLength": 80 },
+    "colors": {
+      "type": "object",
+      "required": ["background", "surface", "text", "muted", "accent", "accent_text"],
+      "additionalProperties": false,
+      "properties": {
+        "background": { "$ref": "#/$defs/color" },
+        "surface": { "$ref": "#/$defs/color" },
+        "text": { "$ref": "#/$defs/color" },
+        "muted": { "$ref": "#/$defs/color" },
+        "accent": { "$ref": "#/$defs/color" },
+        "accent_text": { "$ref": "#/$defs/color" }
+      }
+    }
+  }
+}
