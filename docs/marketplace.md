@@ -62,7 +62,9 @@ The trust set and envelope are EON Stream's (madde 34): Ed25519, JCS subject
 `{"id","sha256","version"}`, keys held by a legal entity that does not exist yet — so the
 set is empty and the honest state of every release is *unsigned*.
 
-**Install.** Unpack or place the artifact in the client's application folder, then
+**Install.** A single-file artifact is saved in the client's folder for the application
+as the manifest's `entry.command` plus the platform's executable suffix (`hello` →
+`hello.exe` on Windows), which is where the core looks for it. Then
 `apps.install` with the release's manifest and that folder as `path`. Nothing is granted.
 
 **Update.** A newer compatible release on the same channel is offered; installing it is
