@@ -21,9 +21,11 @@ clients and applications this project will never control — can implement it.
 | [docs/capabilities.md](docs/capabilities.md) | What each permission allows and how to explain it to a person |
 | [docs/sync.md](docs/sync.md) | Clock stamps, change format, merge rules, conflicts |
 | [docs/versioning.md](docs/versioning.md) | Which numbers decide compatibility |
+| [docs/marketplace.md](docs/marketplace.md) | The marketplace index, the checks it makes, and what a client does to install and update |
 | [schemas/app-manifest.v0.schema.json](schemas/app-manifest.v0.schema.json) | The application manifest |
 | [schemas/message.v0.schema.json](schemas/message.v0.schema.json) | The message envelope on the wire |
 | [schemas/theme.v0.schema.json](schemas/theme.v0.schema.json) | Declarative themes |
+| [schemas/marketplace-entry.v0.schema.json](schemas/marketplace-entry.v0.schema.json) | One application in the marketplace index |
 
 The reference implementation is
 [`eon-office-core`](https://github.com/EON-Extensible-Open-Network/eon-office-core); the

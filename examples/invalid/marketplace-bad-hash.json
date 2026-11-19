@@ -1,0 +1,45 @@
+{
+  "entry": 0,
+  "id": "org.example.hello",
+  "name": "Hello",
+  "summary": "Says hello to other applications.",
+  "description": "A small example application.",
+  "category": "utilities",
+  "license": "MIT",
+  "source": "https://github.com/example/hello",
+  "publisher": {
+    "name": "Example",
+    "verified": false
+  },
+  "official": false,
+  "tags": [
+    "example"
+  ],
+  "recommends": [],
+  "releases": [
+    {
+      "version": "0.1.0",
+      "published": "2026-11-19",
+      "channel": "stable",
+      "manifest": {
+        "manifest": 0,
+        "id": "org.example.hello",
+        "name": "Hello",
+        "version": "0.1.0",
+        "api": {
+          "min": 0,
+          "max": 0
+        }
+      },
+      "artifacts": [
+        {
+          "platform": "windows-x86_64",
+          "url": "https://github.com/example/hello/releases/download/v0.1.0/hello.exe",
+          "sha256": "ABC",
+          "size": 123456,
+          "signature": null
+        }
+      ]
+    }
+  ]
+}

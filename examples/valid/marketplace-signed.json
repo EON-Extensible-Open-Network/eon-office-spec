@@ -1,0 +1,55 @@
+{
+  "entry": 0,
+  "id": "org.example.hello",
+  "name": "Hello",
+  "summary": "Says hello to other applications.",
+  "description": "A small example application.",
+  "category": "utilities",
+  "license": "MIT",
+  "source": "https://github.com/example/hello",
+  "publisher": {
+    "name": "Example",
+    "verified": false
+  },
+  "official": false,
+  "tags": [
+    "example"
+  ],
+  "recommends": [],
+  "releases": [
+    {
+      "version": "0.1.0",
+      "published": "2026-11-19",
+      "channel": "stable",
+      "manifest": {
+        "manifest": 0,
+        "id": "org.example.hello",
+        "name": "Hello",
+        "version": "0.1.0",
+        "api": {
+          "min": 0,
+          "max": 0
+        }
+      },
+      "artifacts": [
+        {
+          "platform": "windows-x86_64",
+          "url": "https://github.com/example/hello/releases/download/v0.1.0/hello.exe",
+          "sha256": "9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08",
+          "size": 123456,
+          "signature": {
+            "algorithm": "ed25519",
+            "keyId": "office-release-2027-a",
+            "value": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+            "signedAt": "2027-01-01T00:00:00Z",
+            "subject": {
+              "id": "org.example.hello",
+              "version": "0.1.0",
+              "sha256": "9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08"
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

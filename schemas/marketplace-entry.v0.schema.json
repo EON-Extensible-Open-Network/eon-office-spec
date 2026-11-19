@@ -1,0 +1,151 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://spec.eonstream.org/office/schemas/marketplace-entry.v0.schema.json",
+  "title": "EON Office marketplace entry (v0 — UNSTABLE)",
+  "description": "One application in the EON Office marketplace index: who publishes it, where its source is, and each release with the exact manifest it installs, the files to download for each platform with their SHA-256, and an optional signature. The index is a Git repository of these files (eon-office-marketplace); clients read the aggregated index.json built from them. See docs/marketplace.md for the rules a client follows and the checks the index tooling adds beyond this schema.",
+  "type": "object",
+  "required": ["entry", "id", "name", "summary", "category", "license", "source", "publisher", "official", "releases"],
+  "additionalProperties": false,
+  "$defs": {
+    "appId": {
+      "type": "string",
+      "maxLength": 100,
+      "pattern": "^[a-z0-9]([a-z0-9-]*[a-z0-9])?(\\.[a-z0-9]([a-z0-9-]*[a-z0-9])?)+$"
+    },
+    "version": {
+      "type": "string",
+      "pattern": "^(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)(-[0-9A-Za-z-]+(\\.[0-9A-Za-z-]+)*)?(\\+[0-9A-Za-z-]+(\\.[0-9A-Za-z-]+)*)?$"
+    },
+    "https": {
+      "type": "string",
+      "maxLength": 500,
+      "pattern": "^https://[^\\s]+$"
+    },
+    "sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "signature": {
+      "description": "The detached Ed25519 envelope of eon-stream-spec/docs/signing-and-revocation.md, reused unchanged: the subject is the artifact's id, version and SHA-256, serialised with JCS. Absent or null: unsigned, which every release is until madde 30's legal entity holds keys.",
+      "type": "object",
+      "required": ["algorithm", "keyId", "value", "subject"],
+      "additionalProperties": false,
+      "properties": {
+        "algorithm": { "const": "ed25519" },
+        "keyId": { "type": "string", "pattern": "^[a-z0-9-]{1,64}$" },
+        "value": { "type": "string", "pattern": "^[A-Za-z0-9+/]{86}==$" },
+        "signedAt": { "type": "string", "format": "date-time" },
+        "subject": {
+          "type": "object",
+          "required": ["id", "version", "sha256"],
+          "additionalProperties": false,
+          "properties": {
+            "id": { "type": "string" },
+            "version": { "type": "string" },
+            "sha256": { "$ref": "#/$defs/sha256" }
+          }
+        }
+      }
+    }
+  },
+  "properties": {
+    "entry": { "description": "The entry format version.", "const": 0 },
+    "id": { "$ref": "#/$defs/appId" },
+    "name": { "type": "string", "minLength": 1, "maxLength": 80, "pattern": "\\S" },
+    "summary": { "type": "string", "minLength": 1, "maxLength": 200, "pattern": "\\S" },
+    "description": { "type": "string", "maxLength": 4000 },
+    "category": {
+      "enum": ["productivity", "communication", "documents", "data", "business", "administration", "security", "developer", "utilities", "other"]
+    },
+    "license": {
+      "description": "SPDX licence expression of the application.",
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 100,
+      "pattern": "^[A-Za-z0-9.+() -]+$"
+    },
+    "source": { "$ref": "#/$defs/https" },
+    "homepage": { "$ref": "#/$defs/https" },
+    "publisher": {
+      "type": "object",
+      "required": ["name", "verified"],
+      "additionalProperties": false,
+      "properties": {
+        "name": { "type": "string", "minLength": 1, "maxLength": 100 },
+        "contact": { "$ref": "#/$defs/https" },
+        "verified": {
+          "description": "Set only by index maintainers, after the publisher-verification process in docs/marketplace.md. A publisher cannot verify itself in its own pull request.",
+          "type": "boolean"
+        }
+      }
+    },
+    "official": {
+      "description": "Built and published by the EON project itself.",
+      "type": "boolean"
+    },
+    "tags": {
+      "type": "array",
+      "maxItems": 10,
+      "uniqueItems": true,
+      "items": { "type": "string", "pattern": "^[a-z0-9-]{1,32}$" }
+    },
+    "requires": {
+      "description": "Applications this one cannot work without, at a minimum version. Rare by design: integrations are optional (architecture rule 2). The index refuses cycles.",
+      "type": "array",
+      "maxItems": 10,
+      "items": {
+        "type": "object",
+        "required": ["app", "min"],
+        "additionalProperties": false,
+        "properties": {
+          "app": { "$ref": "#/$defs/appId" },
+          "min": { "$ref": "#/$defs/version" }
+        }
+      }
+    },
+    "recommends": {
+      "description": "Applications this one integrates with when present. Offered, never installed automatically.",
+      "type": "array",
+      "maxItems": 20,
+      "uniqueItems": true,
+      "items": { "$ref": "#/$defs/appId" }
+    },
+    "releases": {
+      "description": "Newest first.",
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["version", "published", "channel", "manifest", "artifacts"],
+        "additionalProperties": false,
+        "properties": {
+          "version": { "$ref": "#/$defs/version" },
+          "published": { "type": "string", "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$" },
+          "channel": { "enum": ["stable", "preview"] },
+          "manifest": {
+            "description": "The exact application manifest this release installs (app-manifest.v0.schema.json). Its id and version must equal the entry's and the release's.",
+            "type": "object"
+          },
+          "artifacts": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "type": "object",
+              "required": ["platform", "url", "sha256", "size"],
+              "additionalProperties": false,
+              "properties": {
+                "platform": { "enum": ["windows-x86_64", "windows-aarch64", "linux-x86_64", "linux-aarch64", "macos-x86_64", "macos-aarch64"] },
+                "url": { "$ref": "#/$defs/https" },
+                "sha256": { "$ref": "#/$defs/sha256" },
+                "size": { "type": "integer", "minimum": 1 },
+                "signature": {
+                  "oneOf": [{ "$ref": "#/$defs/signature" }, { "type": "null" }]
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

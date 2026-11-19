@@ -1,0 +1,20 @@
+{
+  "entry": 0,
+  "id": "org.example.hello",
+  "name": "Hello",
+  "summary": "Says hello to other applications.",
+  "description": "A small example application.",
+  "category": "utilities",
+  "license": "MIT",
+  "source": "https://github.com/example/hello",
+  "publisher": {
+    "name": "Example",
+    "verified": false
+  },
+  "official": false,
+  "tags": [
+    "example"
+  ],
+  "recommends": [],
+  "releases": []
+}

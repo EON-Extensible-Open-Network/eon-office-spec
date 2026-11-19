@@ -15,6 +15,7 @@ addFormats(ajv);
 
 const schemas = {
   manifest: "schemas/app-manifest.v0.schema.json",
+  marketplace: "schemas/marketplace-entry.v0.schema.json",
   message: "schemas/message.v0.schema.json",
   theme: "schemas/theme.v0.schema.json",
 };
