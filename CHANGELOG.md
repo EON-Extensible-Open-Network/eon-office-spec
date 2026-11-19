@@ -7,6 +7,8 @@ SPDX-FileCopyrightText: 2026 EON contributors
 
 ## Unreleased
 
+- Protocol: the well-known `activity` event (recent items and the activity feed, titles
+  never contents) and the `eon-office://` deep-link format.
 - Marketplace: entry schema v0 and `docs/marketplace.md` (index checks, client install,
   update and signature rules; ratings and verification stated as gated, not invented).
 - Protocol: well-known methods `open` and `focus`, so a shell can open a search result

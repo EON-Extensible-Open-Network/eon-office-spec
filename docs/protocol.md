@@ -291,6 +291,36 @@ of `apps.call`, not core features; the core treats them like any other provided 
 An application that does not provide them is still a complete application; a shell then
 shows the item without opening it.
 
+### Well-known events
+
+Event names an application may put in `publishes` so a shell can build suite-wide views
+without knowing the application.
+
+| Event | Payload | Meaning |
+|---|---|---|
+| `activity` | `id` (as for `open`), `title`, `kind` (`created`, `opened`, `edited`, `shared`), optional `at` (ms) | The person did something with an item. A shell keeps the recent items and the activity feed from these. |
+
+Rules for `activity`: publish what the person did, never what an item **contains** — a
+title, not a body; the shell stores it locally and nowhere else (madde 31, 36). An
+application publishes it only for the person's own actions, never for background work.
+A shell receives it by subscribing to `*` and keeping topics that end in `/activity`.
+
+### Deep links
+
+An `eon-office://` address points at an item in an application, for links between
+documents, a notification's action, or the operating system's link handler:
+
+```
+eon-office://<app-id>/<item-id>[?<query>]
+eon-office://org.eon.office.notes/n-2026-11-19
+```
+
+A shell that receives one checks that `<app-id>` is installed, starts it if it is
+launchable and not running, and calls its `open` method with `{ "id": "<item-id>",
+"query": "<query>" }` (percent-decoded). `<item-id>` uses the same characters as storage
+ids. A link to an application that is not installed is shown as such, with the option to
+find it in the marketplace; it is never resolved by guessing.
+
 ### Messages the core sends to applications
 
 | Message | Kind | Application should |
