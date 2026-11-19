@@ -57,6 +57,26 @@ to applications.
 
 - **v0:** any. Export to a file, carry it, import it. The core's tests do exactly this
   between two cores.
-- **Planned:** `eon-office-server` as a relay an organisation or a person runs. End-to-end
-  encryption of changes in transit through a server is a design requirement for it, not
-  an afterthought; it is not specified yet.
+
+### The server relay — DESIGNED, not implemented
+
+`eon-office-server` relays changes between a person's devices and, later, between the
+members of a workspace. The design keeps the server as ignorant as the merge allows:
+
+- **End-to-end encrypted changes.** A device encrypts each batch of changes before it
+  leaves (XChaCha20-Poly1305, a per-space key). The server stores and forwards ciphertext.
+  It sees, unavoidably: which account and device sent a batch, when, how large, and the
+  batch's clock-stamp range so it can answer "everything after X". It never sees
+  application ids, collections, document ids or contents.
+- **Pull by stamp.** `push(batch)` and `pull(since)` are the whole data API; merging stays
+  on the devices, exactly as `sync.import` does today, so the server needs no knowledge of
+  documents and a buggy server cannot corrupt a merge — only withhold or replay
+  ciphertext, which stamps and authentication tags make detectable.
+- **Keys.** **[A]** For one person's devices: a key shared by pairing a new device with an
+  existing one (QR code or short code), never via the server. For a workspace: a key
+  per space wrapped for each member's device key, rotated when a member leaves. The
+  organisational directory (who is a member) lives on the server; the keys do not.
+- **Accounts and sign-in** through the organisation's identity provider (OIDC), as the
+  roadmap decides; the server stores no passwords of its own.
+- **Gate.** Self-hosting needs nothing from the project. The project running such a
+  server for others is behind madde 30's Faz L1 gate.
